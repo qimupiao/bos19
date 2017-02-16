@@ -1,6 +1,9 @@
 package com.itheima.bos.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * User entity. @author MyEclipse Persistence Tools
@@ -19,7 +22,25 @@ public class User implements java.io.Serializable {
 	private String station;
 	private String telephone;
 	private String remark;
+	private Set<Noticebill> noticebills = new HashSet<Noticebill>();
+	private Set<Role> roles = new HashSet<Role>();
 
+	public String getFormateBirthday(){
+		if(birthday != null){
+			return new SimpleDateFormat("yyyy-MM-dd").format(birthday);
+		}else{
+			return "未提交生日";
+		}
+	}
+	
+	public String getRoleNames(){
+		String names = "";
+		for (Role role : roles) {
+			names += role.getName() + " ";
+		}
+		return names;
+	}
+	
 	// Constructors
 
 	/** default constructor */
@@ -120,6 +141,22 @@ public class User implements java.io.Serializable {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public Set<Noticebill> getNoticebills() {
+		return noticebills;
+	}
+
+	public void setNoticebills(Set<Noticebill> noticebills) {
+		this.noticebills = noticebills;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 }

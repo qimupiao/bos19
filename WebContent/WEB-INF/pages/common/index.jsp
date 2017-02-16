@@ -27,6 +27,8 @@
 <script
 	src="${pageContext.request.contextPath }/js/easyui/locale/easyui-lang-zh_CN.js"
 	type="text/javascript"></script>
+<script src="${pageContext.request.contextPath }/js/outOfBounds.js"
+	type="text/javascript"></script>
 <script type="text/javascript">
 	// 初始化ztree菜单
 	$(function() {
@@ -40,7 +42,7 @@
 				onClick : onClick
 			}
 		};
-		
+
 		// 基本功能菜单加载
 		$.ajax({
 			url : '${pageContext.request.contextPath}/json/menu.json',
@@ -54,7 +56,7 @@
 				alert('菜单加载异常!');
 			}
 		});
-		
+
 		// 系统管理菜单加载
 		$.ajax({
 			url : '${pageContext.request.contextPath}/json/admin.json',
@@ -68,26 +70,29 @@
 				alert('菜单加载异常!');
 			}
 		});
-		
+
 		// 页面加载后 右下角 弹出窗口
 		/**************/
-		window.setTimeout(function(){
-			$.messager.show({
-				title:"消息提示",
-				msg:'欢迎登录，超级管理员！ <a href="javascript:void" onclick="top.showAbout();">联系管理员</a>',
-				timeout:5000
-			});
-		},3000);
+		window
+				.setTimeout(
+						function() {
+							$.messager
+									.show({
+										title : "消息提示",
+										msg : '欢迎登录，超级管理员！ <a href="javascript:void" onclick="top.showAbout();">联系管理员</a>',
+										timeout : 5000
+									});
+						}, 3000);
 		/*************/
-		
-		$("#btnCancel").click(function(){
+
+		$("#btnCancel").click(function() {
 			$('#editPwdWindow').window('close');
 		});
 	});
 
 	function onClick(event, treeId, treeNode, clickFlag) {
 		// 判断树菜单节点是否含有 page属性
-		if (treeNode.page!=undefined && treeNode.page!= "") {
+		if (treeNode.page != undefined && treeNode.page != "") {
 			if ($("#tabs").tabs('exists', treeNode.name)) {// 判断tab是否存在
 				$('#tabs').tabs('select', treeNode.name); // 切换tab
 			} else {
@@ -120,7 +125,7 @@
 		$easyuiTheme.attr('href', href);
 		var $iframe = $('iframe');
 		if ($iframe.length > 0) {
-			for ( var i = 0; i < $iframe.length; i++) {
+			for (var i = 0; i < $iframe.length; i++) {
 				var ifr = $iframe[i];
 				$(ifr).contents().find('#easyuiTheme').attr('href', href);
 			}
@@ -129,34 +134,34 @@
 	// 退出登录
 	function logoutFun() {
 		$.messager
-		.confirm('系统提示','您确定要退出本次登录吗?',function(isConfirm) {
-			if (isConfirm) {
-				location.href = '${pageContext.request.contextPath }/userAction_logout.action';
-			}
-		});
+				.confirm(
+						'系统提示',
+						'您确定要退出本次登录吗?',
+						function(isConfirm) {
+							if (isConfirm) {
+								location.href = '${pageContext.request.contextPath }/userAction_logout.action';
+							}
+						});
 	}
 	// 修改密码
 	function editPassword() {
 		$('#editPwdWindow').window('open');
 	}
 	// 版权信息
-	function showAbout(){
-		$.messager.alert("宅急送 v1.0","管理员邮箱: zqx@itcast.cn");
+	function showAbout() {
+		$.messager.alert("宅急送 v1.0", "管理员邮箱: zqx@itcast.cn");
 	}
 </script>
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false"
-		style="height:80px;padding:10px;background:url('./images/header_bg.png') no-repeat right;">
-		<div>
-			<img src="${pageContext.request.contextPath }/images/logo.png"
-				border="0">
-		</div>
+		style="height: 80px; padding: 10px; background: url('./images/header_bg.png') no-repeat right;">
+		<div></div>
 		<div id="sessionInfoDiv"
-			style="position: absolute;right: 5px;top:10px;">
+			style="position: absolute; right: 5px; top: 10px;">
 			[<strong>超级管理员</strong>]，欢迎你！
 		</div>
-		<div style="position: absolute; right: 5px; bottom: 10px; ">
+		<div style="position: absolute; right: 5px; bottom: 10px;">
 			<a href="javascript:void(0);" class="easyui-menubutton"
 				data-options="menu:'#layout_north_pfMenu',iconCls:'icon-ok'">更换皮肤</a>
 			<a href="javascript:void(0);" class="easyui-menubutton"
@@ -177,12 +182,14 @@
 		</div>
 	</div>
 	<div data-options="region:'west',split:true,title:'菜单导航'"
-		style="width:200px">
+		style="width: 200px">
 		<div class="easyui-accordion" fit="true" border="false">
-			<div title="基本功能" data-options="iconCls:'icon-mini-add'" style="overflow:auto">
+			<div title="基本功能" data-options="iconCls:'icon-mini-add'"
+				style="overflow: auto">
 				<ul id="treeMenu" class="ztree"></ul>
 			</div>
-			<div title="系统管理" data-options="iconCls:'icon-mini-add'" style="overflow:auto">  
+			<div title="系统管理" data-options="iconCls:'icon-mini-add'"
+				style="overflow: auto">
 				<ul id="adminMenu" class="ztree"></ul>
 			</div>
 		</div>
@@ -190,15 +197,16 @@
 	<div data-options="region:'center'">
 		<div id="tabs" fit="true" class="easyui-tabs" border="false">
 			<div title="消息中心" id="subWarp"
-				style="width:100%;height:100%;overflow:hidden">
-				<iframe src="${pageContext.request.contextPath }/page_common_home.action"
-					style="width:100%;height:100%;border:0;"></iframe>
+				style="width: 100%; height: 100%; overflow: hidden">
+				<iframe
+					src="${pageContext.request.contextPath }/page_common_home.action"
+					style="width: 100%; height: 100%; border: 0;"></iframe>
 				<%--				这里显示公告栏、预警信息和代办事宜--%>
 			</div>
 		</div>
 	</div>
 	<div data-options="region:'south',border:false"
-		style="height:50px;padding:10px;background:url('./images/header_bg.png') no-repeat right;">
+		style="height: 50px; padding: 10px; background: url('./images/header_bg.png') no-repeat right;">
 		<table style="width: 100%;">
 			<tbody>
 				<tr>
@@ -214,65 +222,77 @@
 			</tbody>
 		</table>
 	</div>
-	
+
 	<!--修改密码窗口-->
-    <div id="editPwdWindow" class="easyui-window" title="修改密码" collapsible="false" minimizable="false" modal="true" closed="true" resizable="false"
-        maximizable="false" icon="icon-save"  style="width: 300px; height: 160px; padding: 5px;
-        background: #fafafa">
-        <div class="easyui-layout" fit="true">
-            <div region="center" border="false" style="padding: 10px; background: #fff; border: 1px solid #ccc;">
-                <form id="editPasswordForm">
-	                <table cellpadding=3>
-	                    <tr>
-	                        <td>新密码：</td>
-	                        <td><input id="txtNewPass" type="Password" class="txt01 easyui-validatebox" 
-	                        	required="true" data-options="validType:'length[4,8]'"
-	                        /></td>
-	                    </tr>
-	                    <tr>
-	                        <td>确认密码：</td>
-	                        <td><input id="txtRePass" type="Password" class="txt01 easyui-validatebox" 
-	                        	required="true" data-options="validType:'length[4,8]'"
-	                        /></td>
-	                    </tr>
-	                </table>
-                </form>
-            </div>
-            <div region="south" border="false" style="text-align: right; height: 30px; line-height: 30px;">
-                <a id="btnEp" class="easyui-linkbutton" icon="icon-ok" href="javascript:void(0)" >确定</a> 
-                <a id="btnCancel" class="easyui-linkbutton" icon="icon-cancel" href="javascript:void(0)">取消</a>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-	  //为“确定”按钮绑定事件
-		$("#btnEp").click(function(){
-			//进行表单校验
-			var v = $("#editPasswordForm").form("validate");//对应表单中的所有输入框进行校验
-			if(v){//表单校验通过
-				//判断两次输入是否一致
-				var v1 = $("#txtNewPass").val();
-				var v2 = $("#txtRePass").val();
-				if(v1 == v2){
-					//输入一致，发送ajax请求，修改当前用户的密码
-					var url = "${pageContext.request.contextPath}/userAction_editPassword.action";
-					$.post(url,{"password":v1},function(data){
-						if(data == '1'){
-							//修改密码成功
-							$.messager.alert("提示信息","密码修改成功！","info");
-						}else{
-							//修改失败
-							$.messager.alert("提示信息","密码修改失败！","warning");
-						}
-						//关闭修改密码的窗口 
-						$("#editPwdWindow").window("close");
-					});
-				}else{
-					//输入不一致，提示用户输入不一致
-					$.messager.alert("提示信息","两次输入密码不一致！","warning");
-				}
-			}
-		});
-    </script>
+	<div id="editPwdWindow" class="easyui-window" title="修改密码"
+		collapsible="false" minimizable="false" modal="true" closed="true"
+		resizable="false" maximizable="false" icon="icon-save"
+		style="width: 300px; height: 160px; padding: 5px; background: #fafafa">
+		<div class="easyui-layout" fit="true">
+			<div region="center" border="false"
+				style="padding: 10px; background: #fff; border: 1px solid #ccc;">
+				<form id="editPasswordForm">
+					<table cellpadding=3>
+						<tr>
+							<td>新密码：</td>
+							<td><input id="txtNewPass" type="Password"
+								class="txt01 easyui-validatebox" required="true"
+								data-options="validType:'length[4,8]'" /></td>
+						</tr>
+						<tr>
+							<td>确认密码：</td>
+							<td><input id="txtRePass" type="Password"
+								class="txt01 easyui-validatebox" required="true"
+								data-options="validType:'length[4,8]'" /></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+			<div region="south" border="false"
+				style="text-align: right; height: 30px; line-height: 30px;">
+				<a id="btnEp" class="easyui-linkbutton" icon="icon-ok"
+					href="javascript:void(0)">确定</a> <a id="btnCancel"
+					class="easyui-linkbutton" icon="icon-cancel"
+					href="javascript:void(0)">取消</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		//为“确定”按钮绑定事件
+		$("#btnEp")
+				.click(
+						function() {
+							//进行表单校验
+							var v = $("#editPasswordForm").form("validate");//对应表单中的所有输入框进行校验
+							if (v) {//表单校验通过
+								//判断两次输入是否一致
+								var v1 = $("#txtNewPass").val();
+								var v2 = $("#txtRePass").val();
+								if (v1 == v2) {
+									//输入一致，发送ajax请求，修改当前用户的密码
+									var url = "${pageContext.request.contextPath}/userAction_editPassword.action";
+									$.post(url, {
+										"password" : v1
+									}, function(data) {
+										if (data == '1') {
+											//修改密码成功
+											$.messager.alert("提示信息", "密码修改成功！",
+													"info");
+										} else {
+											//修改失败
+											$.messager.alert("提示信息", "密码修改失败！",
+													"warning");
+										}
+										//关闭修改密码的窗口 
+										$("#editPwdWindow").window("close");
+									});
+								} else {
+									//输入不一致，提示用户输入不一致
+									$.messager.alert("提示信息", "两次输入密码不一致！",
+											"warning");
+								}
+							}
+						});
+	</script>
 </body>
 </html>
