@@ -60,7 +60,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 	protected IFunctionService functionService;
 	@Autowired
 	protected IRoleService roleService;
-	
+
 	protected PageBean pageBean = new PageBean();
 	DetachedCriteria detachedCriteria = null;
 
@@ -79,14 +79,12 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 		return model;
 	}
 
-	public void writePageBean2Json(PageBean pageBean, String[] excludes)
-			throws IOException {
+	public void writePageBean2Json(PageBean pageBean, String[] excludes) throws IOException {
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.setExcludes(excludes);
 		JSONObject jsonObject = JSONObject.fromObject(pageBean, jsonConfig);
 		String json = jsonObject.toString();
-		ServletActionContext.getResponse().setContentType(
-				"text/json;charset=UTF-8");
+		ServletActionContext.getResponse().setContentType("text/json;charset=UTF-8");
 		ServletActionContext.getResponse().getWriter().print(json);
 	}
 
@@ -95,14 +93,13 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 	 */
 	public BaseAction() {
 		ParameterizedType genericSuperclass = null;
-		
-		if(this.getClass().getGenericSuperclass() instanceof ParameterizedType){
-			genericSuperclass = (ParameterizedType) this
-			.getClass().getGenericSuperclass();
-		}else{//当前为Action创建了代理
+
+		if (this.getClass().getGenericSuperclass() instanceof ParameterizedType) {
+			genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
+		} else {// 当前为Action创建了代理
 			genericSuperclass = (ParameterizedType) this.getClass().getSuperclass().getGenericSuperclass();
 		}
-		
+
 		Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
 		// 获得实体类型
 		Class<T> entityClass = (Class<T>) actualTypeArguments[0];
@@ -117,25 +114,22 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
 			e.printStackTrace();
 		}
 	}
-	
-	public  void writeList2Json(List list, String[] excludes) throws IOException {
+
+	public void writeList2Json(List list, String[] excludes) throws IOException {
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.setExcludes(excludes);
 		JSONArray jsonObject = JSONArray.fromObject(list, jsonConfig);
 		String json = jsonObject.toString();
-		ServletActionContext.getResponse().setContentType(
-				"text/json;charset=UTF-8");
+		ServletActionContext.getResponse().setContentType("text/json;charset=UTF-8");
 		ServletActionContext.getResponse().getWriter().print(json);
 	}
-	
-	public void writeObject2Json(Object object, String[] excludes)
-			throws IOException {
+
+	public void writeObject2Json(Object object, String[] excludes) throws IOException {
 		JsonConfig jsonConfig = new JsonConfig();
 		jsonConfig.setExcludes(excludes);
 		JSONObject jsonObject = JSONObject.fromObject(object, jsonConfig);
 		String json = jsonObject.toString();
-		ServletActionContext.getResponse().setContentType(
-				"text/json;charset=UTF-8");
+		ServletActionContext.getResponse().setContentType("text/json;charset=UTF-8");
 		ServletActionContext.getResponse().getWriter().print(json);
 	}
 }

@@ -43,8 +43,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	 */
 	public BaseDaoImpl() {
 		// 获得父类（BaseDaoImpl<T>）类型
-		ParameterizedType genericSuperclass = (ParameterizedType) this
-				.getClass().getGenericSuperclass();
+		ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
 		// 获得父类上的泛型数组
 		Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
 		entityClass = (Class<T>) actualTypeArguments[0];
@@ -76,7 +75,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 	 */
 	public void executeUpdate(String queryName, Object... objects) {
 		Session session = this.getSession();// 从本地线程中获得session对象
-		
+
 		// 使用命名查询语句获得一个查询对象
 		Query query = session.getNamedQuery(queryName);
 		// 为HQL语句中的？赋值
@@ -94,16 +93,18 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
 		int currentPage = pageBean.getCurrentPage();
 		int pageSize = pageBean.getPageSize();
 		DetachedCriteria detachedCriteria = pageBean.getDetachedCriteria();
-		//总数据量----select count(*) from bc_staff
-		//改变Hibernate框架发出的sql形式
-		detachedCriteria.setProjection(Projections.rowCount());//select count(*) from bc_staff
+		// 总数据量----select count(*) from bc_staff
+		// 改变Hibernate框架发出的sql形式
+		detachedCriteria.setProjection(Projections.rowCount());// select
+																// count(*) from
+																// bc_staff
 		List<Long> list = this.getHibernateTemplate().findByCriteria(detachedCriteria);
 		Long total = list.get(0);
-		pageBean.setTotal(total.intValue());//设置总数据量
-		detachedCriteria.setProjection(null);//修改sql的形式为select * from ....
-		//重置表和类的映射关系
+		pageBean.setTotal(total.intValue());// 设置总数据量
+		detachedCriteria.setProjection(null);// 修改sql的形式为select * from ....
+		// 重置表和类的映射关系
 		detachedCriteria.setResultTransformer(DetachedCriteria.ROOT_ENTITY);
-		//当前页展示的数据集合
+		// 当前页展示的数据集合
 		int firstResult = (currentPage - 1) * pageSize;
 		int maxResults = pageSize;
 		List rows = this.getHibernateTemplate().findByCriteria(detachedCriteria, firstResult, maxResults);

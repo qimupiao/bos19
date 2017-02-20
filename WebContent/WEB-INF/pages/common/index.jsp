@@ -44,18 +44,19 @@
 		};
 
 		// 基本功能菜单加载
-		$.ajax({
-			url : '${pageContext.request.contextPath}/json/menu.json',
-			type : 'POST',
-			dataType : 'text',
-			success : function(data) {
-				var zNodes = eval("(" + data + ")");
-				$.fn.zTree.init($("#treeMenu"), setting, zNodes);
-			},
-			error : function(msg) {
-				alert('菜单加载异常!');
-			}
-		});
+		$
+				.ajax({
+					url : '${pageContext.request.contextPath}/functionAction_findMenu.action',
+					type : 'POST',
+					dataType : 'json',
+					success : function(data) {
+						//var zNodes = eval("(" + data + ")");
+						$.fn.zTree.init($("#treeMenu"), setting, data);
+					},
+					error : function(msg) {
+						alert('菜单加载异常!');
+					}
+				});
 
 		// 系统管理菜单加载
 		$.ajax({
@@ -93,15 +94,22 @@
 	function onClick(event, treeId, treeNode, clickFlag) {
 		// 判断树菜单节点是否含有 page属性
 		if (treeNode.page != undefined && treeNode.page != "") {
+			var content = '<div style="width:100%;height:100%;overflow:hidden;">'
+					+ '<iframe src="'
+					+ treeNode.page
+					+ '" scrolling="auto" style="width:100%;height:100%;border:0;" ></iframe></div>';
 			if ($("#tabs").tabs('exists', treeNode.name)) {// 判断tab是否存在
 				$('#tabs').tabs('select', treeNode.name); // 切换tab
+				var tab = $('#tabs').tabs('getSelected');
+				$('#tabs').tabs('update', {
+					tab : tab,
+					options : {
+						title : treeNode.name,
+						content : content
+					}
+				});
 			} else {
 				// 开启一个新的tab页面
-				var content = '<div style="width:100%;height:100%;overflow:hidden;">'
-						+ '<iframe src="'
-						+ treeNode.page
-						+ '" scrolling="auto" style="width:100%;height:100%;border:0;" ></iframe></div>';
-
 				$('#tabs').tabs('add', {
 					title : treeNode.name,
 					content : content,
@@ -156,7 +164,6 @@
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false"
 		style="height: 80px; padding: 10px; background: url('./images/header_bg.png') no-repeat right;">
-		<div></div>
 		<div id="sessionInfoDiv"
 			style="position: absolute; right: 5px; top: 10px;">
 			[<strong>超级管理员</strong>]，欢迎你！
